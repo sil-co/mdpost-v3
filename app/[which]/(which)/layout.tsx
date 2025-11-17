@@ -40,8 +40,8 @@ export default function Layout({
     return (
         <div className="flex min-h-screen w-full relative">
             {/* Sidebar (hidden on mobile, side-in when open) */}
-            <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300 ease-in-out
-                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:static`}>
+            <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300 ease-in-out overflow-x-hidden
+                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 overflow-y-auto`}>
                 {which !== "tech" &&
                     <div className="flex gap-2 p-2">
                         <button
@@ -81,7 +81,7 @@ export default function Layout({
             )}
 
             {/* Main content */}
-            <div className="flex-1 w-full flex flex-col">
+            <div className="flex-1 w-full flex flex-col overflow-y-auto ml-0 md:ml-64">
                 {/* Top bar for mobile */}
                 <div className="md:hidden flex items-center justify-between p-3 border-b border-gray-200 bg-white sticky top-0 z-20">
                     <button

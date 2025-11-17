@@ -69,7 +69,7 @@ function FolderList({
                     : "text-blue-600 hover:underline cursor-pointer"
                     }`}
             >
-                <FileText size={14} />
+                <FileText size={14} className="min-w-[14]" />
                 {node.name.replace(".md", "")}
             </Link>
             // </>
