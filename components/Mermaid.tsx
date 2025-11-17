@@ -35,27 +35,63 @@ export default function Mermaid({ chart }: { chart: string; }) {
         render();
     }, [chart]);
 
-    // Opens SVG in new browser tab
     function openInNewTab() {
         const svg = svgRef.current;
         if (!svg) return;
-        const newWindow = window.open("", "_blank");
-        if (newWindow) {
-            newWindow.document.write(`
-                <html>
-                <head>
-                    <title>Mermaid Diagram</title>
-                    <style>
-                        body { margin: 0; padding: 20px; }
-                        svg { width: 100%; height: auto; }
-                    </style>
-                </head>
-                <body>
-                    ${svg}
-                </body>
-                </html>
-            `);
-        }
+
+        // Inline JS for pan/zoom (small, no external scripts)
+        const html = `
+      <html>
+        <head>
+          <title>Mermaid Diagram</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <style>
+            html, body { margin:0; padding:0; overflow:hidden; height:100%; }
+            body { display:flex; justify-content:center; align-items:center; background:#f9f9f9; }
+            svg { max-width:100%; max-height:100%; touch-action: pan-x pan-y; }
+          </style>
+        </head>
+        <body>
+          <div id="svg-container">${svg}</div>
+          <script>
+            const svg = document.querySelector('svg');
+            let scale = 1;
+            let startX, startY, originX=0, originY=0;
+
+            svg.addEventListener('wheel', e => {
+              e.preventDefault();
+              const delta = e.deltaY < 0 ? 1.1 : 0.9;
+              scale *= delta;
+              svg.style.transform = \`translate(\${originX}px, \${originY}px) scale(\${scale})\`;
+            });
+
+            svg.addEventListener('pointerdown', e => {
+              e.preventDefault();
+              startX = e.clientX - originX;
+              startY = e.clientY - originY;
+              svg.setPointerCapture(e.pointerId);
+            });
+
+            svg.addEventListener('pointermove', e => {
+              if (startX !== undefined) {
+                originX = e.clientX - startX;
+                originY = e.clientY - startY;
+                svg.style.transform = \`translate(\${originX}px, \${originY}px) scale(\${scale})\`;
+              }
+            });
+
+            svg.addEventListener('pointerup', e => {
+              startX = undefined;
+              startY = undefined;
+            });
+          </script>
+        </body>
+      </html>
+    `;
+
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank", "width=800,height=600");
     }
 
     return (
