@@ -96,13 +96,13 @@ export default function Mermaid({ chart }: { chart: string; }) {
 
     return (
         <div className="flex flex-col items-end">
+            <div ref={containerRef} className="w-full" />
             <button
                 onClick={openInNewTab}
-                className="flex items-center gap-1 px-2 py-1 text-xs rounded-md border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 shadow-sm transition"
+                className="mt-2 flex items-center gap-1 px-2 py-1 text-xs rounded-md border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 shadow-sm transition"
             >
                 Open in new tab
             </button>
-            <div ref={containerRef} className="w-full" />
         </div>
     );
 }
