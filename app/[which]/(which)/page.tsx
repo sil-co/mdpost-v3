@@ -20,6 +20,6 @@ export default async function Page({ params }: { params: Promise<{ which: string
         return null;
     }
     const firstMd = findFirstMd(tree);
-    if (firstMd) redirect(`/${which}/${firstMd}`);
+    if (firstMd) redirect(encodeURI(`/${which}/${firstMd}`));
     return null;
 }
