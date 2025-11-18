@@ -47,7 +47,7 @@ jobs:
   #     ci-status: ${{ job.status }}
   
   deploy:
-    name: Deploy to Ubuntu Server
+    name: Deploy to Ubuntu Server 
     # needs: ci
     # if: needs.ci.outputs.ci-status == 'success'
     runs-on: ubuntu-latest
