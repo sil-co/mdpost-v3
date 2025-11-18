@@ -56,8 +56,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: Clean workspace
-        run: rm -rf content node_modules .next
+      # - name: Clean workspace
+      #   run: rm -rf content node_modules .next
       
       - name: Copy files to server via SSH
         uses: appleboy/scp-action@master
@@ -66,7 +66,16 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          source: "."
+          # source: "./"
+          source: |
+            package.json
+            package-lock.json
+            next.config.js
+            app/
+            src/
+            public/
+          strip_components: 1
+          rm: true
           target: ${{ secrets.APP_DIR }}
       
       - name: Execute deploy commands on server
