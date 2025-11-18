@@ -78,7 +78,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          scripts: |
+          script: |
             cd ${{ secrets.APP_DIR }}
             npm install
             npm run build
