@@ -76,7 +76,7 @@ jobs:
           #   app/
           #   public/
           source: package.json,package-lock.json,next.config.ts,app,components,context,lib,public
-          rm: true
+          rm: false
           target: ${{ secrets.APP_DIR }}
       
       - name: Execute deploy commands on server
