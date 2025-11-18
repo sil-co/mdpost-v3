@@ -1,0 +1,84 @@
+name: CI/CD Next.js & Playwright
+
+on:
+  push:
+    branches: 
+      - main
+      - staging
+      - develop
+      - feature
+jobs:
+  ci:
+    name: Run CI Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      
+      - name: Prepare content directory
+        run: |
+          mkdir -p content/mdblog
+          git clone https://github.com/sil-co/mdblog-content-pub.git content/mdblog
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+      
+      # Build Next.js
+      - name: Build Next.js
+        run: npm run build
+      
+      # Install Playwright browsers
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      
+      # Run Playwright tests
+      - name: Run E2E tests
+        run: npx playwright test
+    
+    outputs:
+      ci-status: ${{ job.status }}
+  
+  deploy:
+    name: Deploy to Ubuntu Server
+    needs: ci
+    if: needs.ci.outputs.ci-status == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Copy files to server via SSH
+        uses: appleboy/scp-actions@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "."
+          exclude: |
+            content/*
+            node_modules/*
+            .next/*
+          target: ${{ secrets.APP_DIR }}
+      
+      - name: Execute deploy commands on server
+        uses: appleboy/ssh-actions@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          scripts: |
+            cd ${{ secrets.APP_DIR }}
+            npm install
+            npm run build
+            pm2 restart mdpost-pub
