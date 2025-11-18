@@ -69,12 +69,13 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          source: |
-            package.json
-            package-lock.json
-            next.config.js
-            app/
-            public/
+          # source: |
+          #   package.json
+          #   package-lock.json
+          #   next.config.js
+          #   app/
+          #   public/
+          source: package.json,package-lock.json,next.config.ts,app,components,context,lib,public
           rm: true
           target: ${{ secrets.APP_DIR }}
       
