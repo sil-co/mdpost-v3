@@ -82,4 +82,4 @@ jobs:
             cd ${{ secrets.APP_DIR }}
             npm install
             npm run build
-            pm2 restart next-app
+            sudo pm2 restart next-app
