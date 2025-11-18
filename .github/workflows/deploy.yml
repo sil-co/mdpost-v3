@@ -8,56 +8,53 @@ on:
       - develop
       - feature
 jobs:
-  ci:
-    name: Run CI Tests
-    runs-on: ubuntu-latest
+  # ci:
+  #   name: Run CI Tests
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      # Install Node.js
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
+  #     # Install Node.js
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: "22"
       
-      - name: Prepare content directory
-        run: |
-          mkdir -p content/mdblog
-          git clone https://github.com/sil-co/mdblog-content-pub.git content/mdblog
+  #     - name: Prepare content directory
+  #       run: |
+  #         mkdir -p content/mdblog
+  #         git clone https://github.com/sil-co/mdblog-content-pub.git content/mdblog
       
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+  #     # Install dependencies
+  #     - name: Install dependencies
+  #       run: npm install
       
-      # Build Next.js
-      - name: Build Next.js
-        run: npm run build
+  #     # Build Next.js
+  #     - name: Build Next.js
+  #       run: npm run build
       
-      # Install Playwright browsers
-      - name: Install Playwright
-        run: npx playwright install --with-deps
+  #     # Install Playwright browsers
+  #     - name: Install Playwright
+  #       run: npx playwright install --with-deps
       
-      # Run Playwright tests
-      - name: Run E2E tests
-        run: npx playwright test
+  #     # Run Playwright tests
+  #     - name: Run E2E tests
+  #       run: npx playwright test
     
-    outputs:
-      ci-status: ${{ job.status }}
+  #   outputs:
+  #     ci-status: ${{ job.status }}
   
   deploy:
     name: Deploy to Ubuntu Server
-    needs: ci
-    if: needs.ci.outputs.ci-status == 'success'
+    # needs: ci
+    # if: needs.ci.outputs.ci-status == 'success'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      # - name: Clean workspace
-      #   run: rm -rf content node_modules .next
       
       - name: Copy files to server via SSH
         uses: appleboy/scp-action@master
@@ -66,7 +63,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-          # source: "./"
           source: |
             package.json
             package-lock.json
@@ -74,7 +70,6 @@ jobs:
             app/
             src/
             public/
-          strip_components: 1
           rm: true
           target: ${{ secrets.APP_DIR }}
       
