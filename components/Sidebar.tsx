@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FolderNode } from "@/lib/getFolderTree";
 import { ChevronRight, ChevronDown, FileText } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -39,6 +39,24 @@ export default function Sidebar({ tree, basePath }: SidebarProps) {
     );
 }
 
+const folderContainsPath = (node: FolderNode, pathname: string, basePath: string): boolean => {
+    const normalizedPathname = decodeURI(pathname).replace(/\/$/, "");
+    if (node.name.endsWith(".md")) {
+        const slugPath = node.path.replace(/\.md$/, "");
+        const normalizedPath = slugPath.replace(/\\/g, "/");
+        const encodedPath = encodeURI(normalizedPath);
+        const href = `${basePath}/${encodedPath}`;
+        const normalizedHref = decodeURI(href).replace(/\/$/, "");
+        return normalizedHref === normalizedPathname;
+    }
+    if (node.children) {
+        return node.children.some(child =>
+            folderContainsPath(child, pathname, basePath)
+        );
+    }
+    return false;
+};
+
 function FolderList({
     node,
     basePath,
@@ -48,7 +66,8 @@ function FolderList({
     basePath: string;
     pathname: string;
 }) {
-    const [open, setOpen] = useState(true);
+    const shouldBeOpen = folderContainsPath(node, pathname, basePath);
+    const [open, setOpen] = useState(shouldBeOpen);
     const isMarkdown = node.name.endsWith(".md");
     const hasChildren = node.children && node.children.length > 0;
 
@@ -61,8 +80,19 @@ function FolderList({
         const normalizedHref = decodeURI(href).replace(/\/$/, "");
         const isActive = normalizedPathname === normalizedHref;
 
+        const activeRef = useRef<HTMLAnchorElement | null>(null);
+        useEffect(() => {
+            if (isActive && activeRef.current) {
+                activeRef.current.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth"
+                });
+            }
+        }, [isActive]);
+
         return (
             <Link
+                ref={activeRef}
                 href={href}
                 className={`flex items-center gap-2 py-1 text-sm rounded-md w-full text-left ${isActive
                     ? "bg-amber-200 text-blue-700 font-medium"
@@ -72,7 +102,6 @@ function FolderList({
                 <FileText size={14} className="min-w-[14]" />
                 {node.name.replace(".md", "")}
             </Link>
-            // </>
         );
     }
 
