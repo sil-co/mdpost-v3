@@ -65,10 +65,6 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "."
           target: ${{ secrets.APP_DIR }}
-          exclude: |
-            content/*
-            node_modules/*
-            .next/*
       
       - name: Execute deploy commands on server
         uses: appleboy/ssh-action@v1.2.0
