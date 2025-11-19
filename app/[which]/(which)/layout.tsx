@@ -83,7 +83,7 @@ export default function Layout({
             {/* Main content */}
             <div className="flex-1 w-full flex flex-col overflow-y-auto ml-0 md:ml-64">
                 {/* Top bar for mobile */}
-                <div className="md:hidden flex items-center justify-between p-3 border-b border-gray-200 bg-white sticky top-0 z-20">
+                <div className="md:hidden fixed w-full flex items-center justify-between p-3 border-b border-gray-200 bg-white top-0 z-20">
                     <button
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                         className="p-2 rounded-md hover:bg-gray-100"
@@ -99,7 +99,7 @@ export default function Layout({
                     </h1>
                 </div>
                 {/* Page content */}
-                <main className="flex-1 overflow-y-auto">{children}</main>
+                <main className="flex-1 overflow-y-auto md:mt-0 mt-12">{children}</main>
             </div>
         </div>
     );
