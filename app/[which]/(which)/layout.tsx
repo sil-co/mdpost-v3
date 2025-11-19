@@ -95,7 +95,7 @@ export default function Layout({
                         )}
                     </button>
                     <h1 className="font-semibold text-lg">
-                        {which === "tech" ? "Tech Blog" : "My Portfolio"}
+                        {which === "tech" ? "Tech" : "My Portfolio"}
                     </h1>
                 </div>
                 {/* Page content */}
