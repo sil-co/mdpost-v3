@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default async function Page({ }) {
-  redirect(`/tech`);
+  redirect(`/tech-blog`);
 }

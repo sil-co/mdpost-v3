@@ -9,9 +9,10 @@ import Link from "next/link";
 interface SidebarProps {
     tree: FolderNode;
     basePath: string;
+    title: string;
 }
 
-export default function Sidebar({ tree, basePath }: SidebarProps) {
+export default function Sidebar({ tree, basePath, title }: SidebarProps) {
     const pathname = usePathname();
 
     const findFirstMarkdown = (node: FolderNode): string | null => {
@@ -27,6 +28,9 @@ export default function Sidebar({ tree, basePath }: SidebarProps) {
 
     return (
         <div className="w-64 bg-gray-50 border-r border-gray-200 p-3 overflow-y-auto h-full">
+            <h1 className="text-2xl mb-2 font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
+                {title}
+            </h1>
             {tree.children?.map((child) => (
                 <FolderList
                     key={child.path}

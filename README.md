@@ -10,7 +10,7 @@ It also supports Youtube embeds, external links, and GitHub-style Markdown featu
 - **Markdown file rendering** with syntax highlighting and GitHub-style formatting
 - **Youtube embed support** via `<iframe>` in Markdown
 - **External links open in a new tab**
-- **Language toggle** (English / Japanese folders), but it doesn't display on "/tech".
+- **Language toggle** (English / Japanese folders), but it doesn't display on "/tech-blog".
 - **Built with TypeScript + TailwindCSS + ReactMarkdown**
 
 ---
@@ -25,7 +25,7 @@ Example folder structure:
 content/
 └── mdblog/
     ├── en/
-    │   ├── tech/
+    │   ├── tech-blog/
     │   │   ├── dsa/
     │   │   └── java/
     │   │       └── springboot/

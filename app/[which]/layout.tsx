@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { formatTitle } from "@/lib/formatTitle";
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -8,19 +9,16 @@ interface LayoutProps {
 export async function generateMetadata({ params }: { params: Promise<{ which: string }>}): Promise<Metadata> {
     const { which } = await params;
 
-    // Change metadata dynamically based on "which"
-    switch (which) {
-        case "":
-        case "tech":
-            return {
-                title: "Tech Blog",
-                description: "Read my blog posts and tech notes.",
-            };
-        default:
-            return {
-                title: "Portfolio",
-                description: "My Portfolio",
-            };
+    if (which[0].toLocaleLowerCase() === "p") {
+        return {
+            title: "My Portfolio",
+            description: "My Portfolio",
+        }
+    } else {
+        return {
+            title: formatTitle(which),
+            description: "Enjoy my markdown posts!!"
+        }
     }
 }
 
