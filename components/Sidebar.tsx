@@ -44,14 +44,13 @@ export default function Sidebar({ tree, basePath, title }: SidebarProps) {
 }
 
 const folderContainsPath = (node: FolderNode, pathname: string, basePath: string): boolean => {
-    const normalizedPathname = decodeURI(pathname).replace(/\/$/, "");
     if (node.name.endsWith(".md")) {
         const slugPath = node.path.replace(/\.md$/, "");
         const normalizedPath = slugPath.replace(/\\/g, "/");
         const encodedPath = encodeURI(normalizedPath);
         const href = `${basePath}/${encodedPath}`;
-        const normalizedHref = decodeURI(href).replace(/\/$/, "");
-        return normalizedHref === normalizedPathname;
+        const isActive = normalize(pathname) === normalize(href);
+        return isActive;
     }
     if (node.children) {
         return node.children.some(child =>
@@ -60,6 +59,13 @@ const folderContainsPath = (node: FolderNode, pathname: string, basePath: string
     }
     return false;
 };
+
+const normalize = (p: string) => {
+    return decodeURI(p)
+        .replace(/\\/g, "/") // Backslashes -> forward slashes
+        .replace(/\/+/g, "/") // Remove double slashes
+        .replace(/\/$/, "") // Trim trailing slash
+}
 
 function FolderList({
     node,
@@ -80,9 +86,7 @@ function FolderList({
         const normalizedPath = slugPath.replace(/\\/g, "/");
         const encodedPath = encodeURI(normalizedPath);
         const href = `${basePath}/${encodedPath}`;
-        const normalizedPathname = decodeURI(pathname).replace(/\/$/, "");
-        const normalizedHref = decodeURI(href).replace(/\/$/, "");
-        const isActive = normalizedPathname === normalizedHref;
+        const isActive = normalize(pathname) === normalize(href);
 
         const activeRef = useRef<HTMLAnchorElement | null>(null);
         useEffect(() => {
