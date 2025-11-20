@@ -6,6 +6,7 @@ import { FolderNode } from "@/lib/getFolderTree";
 import { use, useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { formatTitle } from "@/lib/formatTitle";
 
 export default function Layout({
     children,
@@ -15,6 +16,7 @@ export default function Layout({
     params: Promise<{ which: string; }>
 }>) {
     const { which } = use(params);
+    const [title, setTitle] = useState("");
     const pathname = usePathname();
     const [folderTree, setFolderTree] = useState<FolderNode | null>(null);
     const { language, setLanguage } = useLanguage();
@@ -35,6 +37,7 @@ export default function Layout({
 
     useEffect(() => {
         setIsSidebarOpen(false);
+        setTitle(formatTitle(which));
     }, [pathname]);
 
     return (
@@ -42,7 +45,7 @@ export default function Layout({
             {/* Sidebar (hidden on mobile, side-in when open) */}
             <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300 ease-in-out overflow-x-hidden
                 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 overflow-y-auto`}>
-                {which !== "tech" &&
+                {which[0].toLowerCase() === "p" &&
                     <div className="flex gap-2 p-2">
                         <button
                             className={`px-3 py-1 rounded ${language === "en"
@@ -62,13 +65,13 @@ export default function Layout({
                         >
                             Japanese
                         </button>
-
                     </div>
                 }
                 {folderTree &&
                     <Sidebar
                         tree={folderTree}
                         basePath={`/${which}`}
+                        title={title}
                     />
                 }
             </aside>
@@ -94,8 +97,8 @@ export default function Layout({
                             <Menu className="w-6 h-6" />
                         )}
                     </button>
-                    <h1 className="font-semibold text-lg">
-                        {which === "tech" ? "Tech Blog" : "My Portfolio"}
+                    <h1 className="font-semibold text-2xl ">
+                        {title}
                     </h1>
                 </div>
                 {/* Page content */}

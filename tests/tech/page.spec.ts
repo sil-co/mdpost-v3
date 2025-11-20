@@ -17,7 +17,7 @@ test.describe('PostPage', () => {
   });
 
   test('renders markdown content from API', async ({ page }) => {
-    await page.goto('/tech/hello-world');
+    await page.goto('/tech-blog/hello-world');
 
     // Expect fetch triggered and markdown to appear
     await expect(page.locator('article')).toContainText('Hello World');
@@ -25,7 +25,7 @@ test.describe('PostPage', () => {
   });
 
   test('changes language attribute dynamically', async ({ page }) => {
-    await page.goto('/tech/hello-world');
+    await page.goto('/tech-blog/hello-world');
 
     // Wait until markdown is loaded
     await expect(page.locator('article')).toContainText('Hello World');

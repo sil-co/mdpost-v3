@@ -46,7 +46,7 @@ Users can read content but content **cannot edit** it from the browser.
     - Sidebar (tree menu)
     - Main content area (Markdown content)
 - FR-12: The UI must support a "language switcher" for EN/JA folders in Portfolio.
-> Note: it must not be displayed on `/tech` (tech blog).
+> Note: it must not be displayed on `/tech-blog` (tech blog).
 
 ### API & Backend
 - FR-13: Provide an API route to retrieve folder structures:
