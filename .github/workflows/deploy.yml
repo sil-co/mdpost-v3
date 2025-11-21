@@ -5,6 +5,9 @@ on:
     branches: 
       - main
 
+permissions:
+  contents: read
+
 jobs:
   ci:
     name: Run CI Tests
@@ -23,7 +26,9 @@ jobs:
       - name: Prepare content directory
         run: |
           mkdir -p content/mdblog
-          git clone https://github.com/sil-co/mdblog-content-pub.git content/mdblog
+          git clone https://${GITHUB_TOKEN}@github.com/sil-co/mdblog-content-pub.git content/mdblog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       # Install dependencies
       - name: Install dependencies
