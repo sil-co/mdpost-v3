@@ -27,7 +27,7 @@ export default function Sidebar({ tree, basePath, title }: SidebarProps) {
     }
 
     return (
-        <div className="w-64 bg-gray-50 border-r border-gray-200 p-3 overflow-y-auto h-full">
+        <div className="w-64 bg-gray-50 border-r border-gray-200 p-3 overflow-y-auto">
             <h1 className="text-2xl mb-2 font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
                 {title}
             </h1>
