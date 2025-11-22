@@ -44,7 +44,8 @@ export default function Layout({
         <div className="flex min-h-screen w-full relative">
             {/* Sidebar (hidden on mobile, side-in when open) */}
             <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-50 border-r border-gray-200 transform transition-transform duration-300 ease-in-out overflow-x-hidden
-                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 overflow-y-auto`}>
+                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 overflow-y-auto`}
+            >
                 {which[0].toLowerCase() === "p" &&
                     <div className="flex gap-2 p-2">
                         <button
