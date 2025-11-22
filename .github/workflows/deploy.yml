@@ -23,12 +23,10 @@ jobs:
         with:
           node-version: "22"
       
-      - name: Prepare content directory
+      - name: Copy demo folder
         run: |
           mkdir -p content/mdblog
-          git clone https://${GITHUB_TOKEN}@github.com/sil-co/mdblog-content-pub.git content/mdblog
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          cp -r demo/* content/mdblog/
       
       # Install dependencies
       - name: Install dependencies
