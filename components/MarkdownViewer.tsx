@@ -15,13 +15,20 @@ const schema = {
             "src",
             "width",
             "height",
-            "allow",
+            // "allow",
             "allowfullscreen",
             "frameborder",
             "title",
             "referrerpolicy",
+            "loading",
         ],
     },
+    protocols: {
+        ...(defaultSchema.protocols || {}),
+        src: ["https"],
+    },
+    clobberPrefix: "",
+    allowComments: false,
 };
 
 // small helper: true if className contains language-mermaid token
@@ -29,6 +36,14 @@ function isMermaidClass(className?: string | null) {
     if (!className) return false;
     // matches "language-mermaid" even if other token (hljs, etc.) exist
     return /\blanguage-mermaid\b/.test(className);
+}
+
+function isSafeYouTube(src?: string) {
+    return (
+        typeof src === "string" &&
+        (src.startsWith("https://www.youtube.com/embed/") ||
+            src.startsWith("https://www.youtube-nocookie.com/embed/"))
+    );
 }
 
 export default function MarkdownViewer({ content }: { content: string }) {
@@ -43,6 +58,23 @@ export default function MarkdownViewer({ content }: { content: string }) {
                 ]}
                 components={{
                     // Mermaid block detection:
+                    iframe({ src, ...props }) {
+                        if (!isSafeYouTube(src)) return null;
+
+                        return (
+                            <div className="w-full aspect-video">
+                                <iframe
+                                    {...props}
+                                    src={src}
+                                    loading="lazy"
+                                    referrerPolicy="strict-origin-when-cross-origin"
+                                    className="w-full h-full"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                />
+                            </div>
+                        );
+                    },
                     pre({ node, className, children, ...props }) {
                         // children usually: [<code className="..." {...}>code text</code>]
                         const child = Array.isArray(children) ? children[0] : children;
