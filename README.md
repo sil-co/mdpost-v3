@@ -5,6 +5,11 @@ It also supports Youtube embeds, external links, and GitHub-style Markdown featu
 
 ---
 
+## Preview
+![Preview video](./resources/video/introduction.gif)
+
+---
+
 ## Features
 - **Auto-generated sidebar** based on local folder structure
 - **Markdown file rendering** with syntax highlighting and GitHub-style formatting
