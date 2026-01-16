@@ -1,3 +1,93 @@
+The English version is the bottom.
+
+# Markdown ブログ＆ポートフォリオビューアー
+Next.js、TypeScript、TailwindCSS を用いて構築された、シンプルでダイナミックな **Markdown ベースのブログ＆ポートフォリオビューアー** です。
+このアプリは、ローカルの Markdown フォルダ構造を自動的に読み取り、折りたたみ可能なサイドバーに表示します。
+
+また、YouTube の埋め込み、外部リンク、表やチェックリストなどの GitHub スタイルの Markdown 機能もサポートしています。
+
+--
+
+## プレビュー
+![プレビュー動画](./resources/video/introduction.gif)
+
+---
+
+## 機能
+- **ローカルフォルダ構造に基づいた自動生成サイドバー**
+- **Markdown ファイルのレンダリング**（構文ハイライトと GitHub スタイルのフォーマットに対応）
+- **YouTube の埋め込み**（Markdown の `<iframe>` 経由）
+- **外部リンクを新しいタブで開く**
+- **言語切り替え**（英語 / 日本語フォルダ）（"/tech-blog" では表示されません）
+- **TypeScript + TailwindCSS + ReactMarkdown で構築**
+
+---
+
+## はじめに
+1. このプロジェクトをクローンします: `git clone <リポジトリ名>` -> `cd <リポジトリ名>`
+2. 依存関係をインストールします: `npm install` または `pnpm install`
+3. コンテンツフォルダを作成します: `mkdir -p ./content/mdblog/en` および `mkdir -p ./content/mdblog/ja`
+4. Markdown ファイルを追加します
+フォルダ構造の例:
+```
+content/
+└── mdblog/
+├── en/
+│ ├── tech-blog/
+│ │ ├── dsa/
+│ │ └── java/
+│ │ └── springboot/
+│ └── portfolio/
+│ ├── About me/
+│ └── 履歴書/
+│ └── 作品/
+└── ja/
+└── ポートフォリオ/
+├── 自己紹介/
+└── 履歴書/
+└── 作品/
+```
+5. 開発サーバーを起動: `npm run dev` または `pnpm run dev`
+6. 開く: [http:localhost:3000](http:localhost:3000)
+
+---
+
+## 技術スタック
+| テクノロジー | 目的 |
+| ------------------------------------ | --------------------------------------------------- |
+| **Next.js (App Router)** | レンダリングとルーティングのためのフレームワーク |
+| **TypeScript** | 型安全性と IDE サポート |
+| **Tailwind CSS** | スタイルとレイアウト |
+| **ReactMarkdown** | Markdown レンダリング |
+| **remark-gfm** | GitHub 風の Markdown (表、チェックリストなど) |
+| **rehype-raw** + **rehype-sanitize** | 安全な HTML レンダリング (`<iframe>` など) |
+
+---
+
+## API ルート
+| ルート | 説明 |
+| ------------------------ | -------------------------------- |
+| `/api/mdblog?path={dir}` | フォルダ構造を JSON 形式で返します |
+| `/api/md?path={file}` | Markdown コンテンツを返します |
+
+---
+
+## 開発ノート
+- アプリは初回アクセス時に **最初の Markdown ファイル** を自動的に読み込みます。
+- サイドバーは **現在アクティブなファイル** をハイライト表示します。
+- 埋め込まれた HTML (例: `<iframe>`) を含む Markdown ファイルは、`rehype-sanitize` を使用して安全にレンダリングされます。
+
+---
+
+## カスタマイズ
+- Markdown のスタイル設定を改善するために、Tailwind Typography を追加します。`pnpm add @tailwindcss/typography` または `npm install @tailwindcss/typography` を実行します。
+次に、`tailwind.config.js` で有効化します。
+```js
+plugins: [require("@tailwindcss/typography")],
+```
+
+---
+
 # Markdown Blog and Portfolio Viewer
 A simple and dynamic **Markdown-based blog and portfolio viewer** built with Next.js, TypeScript, and TailwindCSS. 
 This app automatically reads a local Markdown folder structure and displays it on a collapsible sidebar.
